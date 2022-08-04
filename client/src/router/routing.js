@@ -3,6 +3,7 @@ import ComingSoon from "../pages/coming-soon/ComingSoon";
 import Dashboard from "../pages/dashboard/Dashboard";
 import EnergyMarket from "../pages/energy-market/EnergyMarket";
 import MyEacs from "../pages/my-eacs/MyEacs";
+import PolkadotNFT from "../pages/polkadot-nft/PolkadotNFT";
 
 export const routes = [
   {
@@ -30,6 +31,13 @@ export const routes = [
     path: "/coming-soon",
     exact: true,
     component: ComingSoon,
+    fallback: null,
+    private: true,
+  },
+  {
+    path: "/polkadot-nft",
+    exact: true,
+    component: PolkadotNFT,
     fallback: null,
     private: true,
   },

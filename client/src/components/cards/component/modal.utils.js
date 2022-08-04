@@ -223,7 +223,6 @@ export const handleSubmit = async (
   stationData
 ) => {
   setLoading(true);
-  console.log(keyWord, data);
 
   const requiredFilds = inputsData[keyWord]
     .filter((i) => i.required)
@@ -284,6 +283,8 @@ export const handleSubmit = async (
       },
     },
   };
+
+  console.log(payload.EAC)
 
   if (keyWord === "EAC") {
     const finded = stationData.current.find((i) => i.name === data["Stations"]);

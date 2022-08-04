@@ -1,5 +1,7 @@
-import { MEASURMENTS, NFT, ORGANISATIONS, STATION } from "./api.endpoints";
+import { MEASURMENTS, NFT, ORGANISATIONS, STATION, POLKANFT } from "./api.endpoints";
 import { httpClient } from "./httpClient";
+import { httpClientPolkadot } from "./httpClientPolkadot";
+
 
 export const getOrganisations = async () => {
   const res = await httpClient.get(ORGANISATIONS);
@@ -50,5 +52,12 @@ export const getNFTs = async (owner) => {
 
 export const getNFTById = async (id) => {
   const res = await httpClient.get(`${NFT}/${id}`);
+  return res?.data;
+};
+
+export const getPolkadotToken = async () => {
+  // const res = await httpClient.get(`${MEASURMENTS}/${org}/${station}`);
+  const res = await httpClientPolkadot.get(`${POLKANFT}`);
+  console.log(res)
   return res?.data;
 };

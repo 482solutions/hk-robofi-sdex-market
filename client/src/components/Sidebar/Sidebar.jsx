@@ -75,7 +75,12 @@ const paths = [
     text: "Settings",
     path: "/coming-soon",
   },
+  {
+    text: "Polkadot NFT",
+    path: "/polkadot-nft",
+  },
 ];
+
 
 const Sidebar = ({ setIsModalOpen }) => {
   const navigate = useNavigate();
@@ -85,6 +90,10 @@ const Sidebar = ({ setIsModalOpen }) => {
     }
     navigate(path);
   };
+  if (window.walletConnection.getAccountId() != "robot-werther.testnet" && paths.length > 4) {
+
+     paths.pop()
+  }
   return (
     <Drawer variant="permanent" anchor="left" PaperProps={{ sx: DrawerStyle }}>
       <List sx={ListStyle}>
@@ -104,7 +113,7 @@ const Sidebar = ({ setIsModalOpen }) => {
         ))}
       </List>
       <Grid sx={TextContainerStyle}>
-        <TitleText title={"NEAR MetaBUILD Hackathon"} />
+        <TitleText title={"RoboFi trading platform"} />
         <RegularText
           content={`© ${new Date().getFullYear()} All Rights Reserved`}
         />

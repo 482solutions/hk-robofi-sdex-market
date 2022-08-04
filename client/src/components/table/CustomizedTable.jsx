@@ -32,6 +32,7 @@ const CustomizedTable = ({
   bodyData,
   renderCell,
   paginationChunkSize = 10,
+  sort = true,
 }) => {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(paginationChunkSize);
@@ -64,9 +65,9 @@ const CustomizedTable = ({
             </TableHead>
             <TableBody>
               {bodyData?.length > 0 &&
-                bodyData.sort((a, b) => {
+                (sort ? bodyData.sort((a, b) => {
                   return a.id - b.id;
-                }) &&
+                }) : true) &&
                 bodyData
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((el, idx) => {
