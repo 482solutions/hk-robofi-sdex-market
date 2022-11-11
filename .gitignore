@@ -2,7 +2,7 @@
 
 /server/dist
 /dist
-/node_modules
+node_modules
 /server/src/truffle/build
 
 # Logs
