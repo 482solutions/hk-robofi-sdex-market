@@ -45,7 +45,7 @@ const Navbar = ({ setIsModalOpen }) => {
     <AppBar sx={HeaderStyle}>
       <Grid container>
         <Typography sx={TypographyStyle} variant="subtitle1">
-          EACs Trading Platform
+          RoboFi Trading Platform
         </Typography>
       </Grid>
       <Grid

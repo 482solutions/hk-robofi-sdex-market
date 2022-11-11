@@ -6,11 +6,11 @@ import TitleText from "../../../components/texts/TitleText";
 import MarketDataCell from "./MarketDataCell";
 
 const SecondBoxStyle = {
-  maxWidth: "605px",
+  // maxWidth: "605px",
   width: "100%",
   height: "100%",
   backgroundColor: "#fff",
-  padding: "40px 43px 31px",
+  padding: "20px 40px 20px",
 };
 
 const TableContainerStyle = {
@@ -23,25 +23,27 @@ const TableContainerStyle = {
   },
 };
 
-const DataSection = ({ title, matchingData, data, bodyData }) => {
+const TokensDataSection = ({ matchingData, data, bodyData }) => {
+  const sort = false;
   return (
     <Box sx={SecondBoxStyle}>
-      <TitleText title={title} />
-      <RegularText
+      <TitleText title={'Tokens'} />
+      {/* <RegularText
         content={`${bodyData ? bodyData.length : 0}/${matchingData} matching`}
-      />
+      /> */}
       <Grid sx={TableContainerStyle}>
         <CustomizedTable
-          headData={data}
+          headData={["ID", "Country", "Year", 'Type', 'Amount', "Action"]}
           bodyData={bodyData}
           paginationChunkSize={3}
           renderCell={(el, idx) => {
-            return <MarketDataCell data={el} key={idx} keyWord={title} />;
+            return <MarketDataCell data={el} key={idx} keyWord={'Tokens'} />;
           }}
+          sort={sort}
         />
       </Grid>
     </Box>
   );
 };
 
-export default DataSection;
+export default TokensDataSection;

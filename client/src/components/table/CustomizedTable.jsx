@@ -18,8 +18,8 @@ const TableContainerStyles = {
   padding: "56px",
   paddingTop: "80px",
   td: {
-    paddingTop: "16px",
-    paddingBottom: "16px",
+    paddingTop: "13px",
+    paddingBottom: "13px",
   },
 };
 

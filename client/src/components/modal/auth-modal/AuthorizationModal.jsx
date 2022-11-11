@@ -40,7 +40,7 @@ const AuthorizationModal = ({ isOpen, setIsModalOpen }) => {
     <CustomizedModal open={isOpen} handleClose={() => setIsModalOpen(false)}>
       <TitleText
         title={
-          "Welcome!\n  Please, authorize to EACs Trading Platform to proceed"
+          "Welcome!\n  Please, authorize to RoboFi Trading Platform to proceed"
         }
       />
       <Grid container sx={AuthActionsContainerStyle} onClick={() => login()}>

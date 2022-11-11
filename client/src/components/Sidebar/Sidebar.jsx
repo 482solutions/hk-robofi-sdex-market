@@ -3,7 +3,8 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import RegularText from "../texts/RegularText";
 import TitleText from "../texts/TitleText";
-import eacsLogo from "./assets/eacsLogo.svg";
+// import eacsLogo from "./assets/eacsLogo.svg";
+import rogofiLogo from "./assets/rogofiLogo.svg";
 
 const DrawerStyle = {
   padding: "0 18px 30px",
@@ -59,7 +60,7 @@ const TextContainerStyle = {
 
 const paths = [
   {
-    imgSrc: eacsLogo,
+    imgSrc: rogofiLogo,
     text: "eac's logo",
     path: "/dashboard",
   },
@@ -70,6 +71,14 @@ const paths = [
   {
     text: "My EAC's",
     path: "/my-eacs",
+  },
+  {
+    text: "Carbon market",
+    path: "/carbon-market",
+  },
+  {
+    text: "My CRT's",
+    path: "/my-crts",
   },
   {
     text: "Settings",
@@ -90,7 +99,7 @@ const Sidebar = ({ setIsModalOpen }) => {
     }
     navigate(path);
   };
-  if (window.walletConnection.getAccountId() != "robot-werther.testnet" && paths.length > 4) {
+  if (window.walletConnection.getAccountId() != "robot-werther.testnet" && paths.length > 6) {
 
      paths.pop()
   }

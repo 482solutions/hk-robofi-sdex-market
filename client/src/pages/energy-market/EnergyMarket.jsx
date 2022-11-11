@@ -1,4 +1,4 @@
-import { Grid, Button } from "@mui/material";
+import { Grid, Button, Box } from "@mui/material";
 import { connect, Contract, WalletConnection } from "near-api-js";
 import { formatNearAmount } from "near-api-js/lib/utils/format";
 import React, { useEffect, useRef, useState } from "react";
@@ -12,11 +12,20 @@ import {
 import { BtnStyle } from "../my-eacs/components/EacsTableCell";
 import DataSection from "./components/DataSection";
 import FormSection from "./components/FormSection";
+import TitleText from "../../components/texts/TitleText";
 
 const MainWrapperStyle = {
-  padding: " 36px 53px",
+  padding: " 10px 40px",
   width: "100%",
   minHeight: "inherit",
+};
+
+const BoxStyle = {
+  padding: "0 56px",
+  paddingTop: "43px",
+  display: "flex",
+  flexDirection: "column",
+  gap: "20px",
 };
 
 const SectionData = [
@@ -301,38 +310,43 @@ const EnergyMarket = () => {
   }, []);
 
   return (
-    <Grid container sx={MainWrapperStyle} gap="27px" justifyContent={"center"}>
-      <FormSection
-        asks={asks}
-        form={form}
-        clearForm={clearForm}
-        setForm={setForm}
-        placeBid={placeBid}
-        handleFormChange={handleFormChange}
-      />
-      <Grid
-        container
-        sx={{ width: "100%", height: "100%", maxWidth: "605px" }}
-        gap="27px"
-        flexDirection={"column"}
-      >
-        {SectionData.map((el, idx) => {
-          return (
-            <DataSection
-              title={el.title}
-              matchingData={
-                el.title === "Asks"
-                  ? immutableData.current.length
-                  : immutableBids.current.length
-              }
-              data={el.data}
-              bodyData={el.title === "Asks" ? asks : bids}
-              key={idx}
-            />
-          );
-        })}
+    <Box sx={BoxStyle}>
+      <Grid>
+        <TitleText title={"Energy Market"} />
       </Grid>
-    </Grid>
+      <Grid container sx={MainWrapperStyle} gap="27px" justifyContent={"center"}>
+        <FormSection
+          asks={asks}
+          form={form}
+          clearForm={clearForm}
+          setForm={setForm}
+          placeBid={placeBid}
+          handleFormChange={handleFormChange}
+        />
+        <Grid
+          container
+          sx={{ width: "100%", height: "100%", maxWidth: "605px" }}
+          gap="27px"
+          flexDirection={"column"}
+        >
+          {SectionData.map((el, idx) => {
+            return (
+              <DataSection
+                title={el.title}
+                matchingData={
+                  el.title === "Asks"
+                    ? immutableData.current.length
+                    : immutableBids.current.length
+                }
+                data={el.data}
+                bodyData={el.title === "Asks" ? asks : bids}
+                key={idx}
+              />
+            );
+          })}
+        </Grid>
+      </Grid>
+    </Box>
   );
 };
 
