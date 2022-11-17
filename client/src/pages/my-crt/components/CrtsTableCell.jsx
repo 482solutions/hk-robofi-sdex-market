@@ -9,39 +9,25 @@ import {
 } from "@mui/material";
 import React, { useEffect } from "react";
 import ArrowIcon from "../assets/arrow-icon.svg";
-import SolarImg from "../assets/solar-station.svg";
-import WindImg from "../assets/wind-station.svg";
-import ThermoImg from "../assets/thermo-station.svg";
-import GaseousImg from "../assets/gaseous-station.svg";
-import LiquidImg from "../assets/liquid-station.svg";
-import HydroImg from "../../dashboard/components/assets/hydroStationImg.svg";
-
 import { TableCellStyle } from "../MyCrts";
 import CellsModalSection from "./CellsModalSection";
 import CustomizedReadInput from "../../../components/inputs/CustomizedReadInput";
 import { Contract } from "near-api-js";
 import { useLocation } from "react-router-dom";
 
-const mapStations = {
-  Solar: SolarImg,
-  Wind: WindImg,
-  Thermo: ThermoImg,
-  Hydro: HydroImg,
-  Gaseous: GaseousImg,
-  Liquid: LiquidImg,
-};
-
 const deviceData = [
   "Device owner",
   "Certificate ID",
   "Certified",
-  "Facility name",
-  "Certified Energy (MWh)",
-  "Generation Start Date",
-  "Device Type",
-  "Certified by registry",
-  "Generation Date",
-  "Generation End Date",
+  "Platform",
+  "Symbol",
+  "Project name",
+  "Region",
+  "Year",
+  "Start time",
+  "End time",
+  "External link",
+  "Mint time",
 ];
 
 export const BtnStyle = {
@@ -107,7 +93,7 @@ const CrtsTableCell = ({ data, idx }) => {
           </IconButton>
         </TableCell>
         {Object.values(data)
-          .slice(1, 5)
+          .slice(1, 4)
           .map((i, index) => {
             return (
               <TableCell key={index} sx={TableCellStyle}>
@@ -145,7 +131,7 @@ const CrtsTableCell = ({ data, idx }) => {
               paddingBottom: "32px",
             }}
           >
-            <Box
+            {/* <Box
               sx={{
                 maxWidth: "140px",
                 width: "140px",
@@ -160,7 +146,7 @@ const CrtsTableCell = ({ data, idx }) => {
                 alt="station"
                 style={{ width: "100%", height: "100%" }}
               />
-            </Box>
+            </Box> */}
 
             {deviceData.map((i, idx) => {
               return (
@@ -179,7 +165,7 @@ const CrtsTableCell = ({ data, idx }) => {
                     defaultValue={
                       data[i] instanceof Date ? data[i].toDateString() : data[i]
                     }
-                    adornMent={i === "Certified" ? "MWh" : undefined}
+                    // adornMent={i === "Certified" ? "MWh2" : undefined}
                   />
                 </Grid>
               );

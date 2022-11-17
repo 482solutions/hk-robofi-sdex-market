@@ -5,9 +5,6 @@ import React, { useEffect, useRef, useState } from "react";
 import { useCallback } from "react";
 import {
   getNFTById,
-  getNFTs,
-  getStation,
-  getStationByOrgAndStationName,
 } from "../../api/api.service";
 import { BtnStyle } from "../my-eacs/components/EacsTableCell";
 import PlatformsDataSection from "./components/PlatformsDataSection";
@@ -172,40 +169,30 @@ const CarbonMarket = () => {
       ])
       const bctPool = bctPoolTco2s.pooledTCO2Tokens.map(item => {
         return {
+              platform: 'ToucanProtocol',
+              projectName: '50 MW Sipansihaporas Hydro Power Plant, North Sumatra',
               symbol: item.token.symbol,
               region: item.token.projectVintage.project.region??'-----',
               year: item.token.projectVintage.name,
               type: 'BCT',
               amount: parseFloat(utils.formatUnits(item.amount, 18)).toFixed(2),
-              btn: (
-                <Button
-                  sx={BtnStyle}
-                  disabled={false}
-                  onClick={() => {console.log('Buy')}
-                  }
-                >
-                  Buy
-                </Button>
-              )
+              address: item.token.address,
+              startTime: item.token.projectVintage.startTime,
+              endTime: item.token.projectVintage.endTime
         }
       })
       const nctPool = nctPoolTco2s.pooledTCO2Tokens.map(item => {
         return {
+              platform: 'ToucanProtocol',
+              projectName: '50 MW Sipansihaporas Hydro Power Plant, North Sumatra',
               symbol: item.token.symbol,
               region: item.token.projectVintage.project.region??'-',
               year: item.token.projectVintage.name,
               type: 'NCT',
               amount: parseFloat(utils.formatUnits(item.amount, 18)).toFixed(2),
-              btn: (
-                <Button
-                  sx={BtnStyle}
-                  disabled={false}
-                  onClick={() => {console.log('Buy')}
-                  }
-                >
-                  Buy
-                </Button>
-              )
+              address: item.token.address,
+              startTime: item.token.projectVintage.startTime,
+              endTime: item.token.projectVintage.endTime
         }
       })
       setTokens([...bctPool, ...nctPool])
@@ -229,6 +216,8 @@ const CarbonMarket = () => {
       const projectsPool = await toucan.fetchCustomQuery(projectsQuery, {first: 1000, skip: 0});
       const projects = projectsPool.projects.map(item => {
         return {
+              platform: 'ToucanProtocol',
+              projectName: '50 MW Sipansihaporas Hydro Power Plant, North Sumatra',
               projectId: item.projectId,
               region: item.region??'-',
               years: item.vintages.map(item => item.name.slice(0,4)).join(),
@@ -246,7 +235,6 @@ const CarbonMarket = () => {
         }
       })
       setProjects(projects)
-
     })();
     // (async () => {
     //   const config = {
@@ -433,15 +421,12 @@ const CarbonMarket = () => {
         <TitleText title={"Carbon Market"} />
       </Grid>
       <PlatformsDataSection
-        matchingData={'1'}
         bodyData={platforms}
       />
       <TokensDataSection
-        matchingData={'1'}
         bodyData={tokens}
       />
       <ProjectsDataSection
-        matchingData={'1'}
         bodyData={projects}
       />
     </Box>
@@ -449,35 +434,3 @@ const CarbonMarket = () => {
 };
 
 export default CarbonMarket;
-
-
-// {SectionData.map((el, idx) => {
-//   return (
-//     <DataSection
-//       title={el.title}
-//       matchingData={
-//         el.title === "Traders"
-//           ? immutableData.current.length
-//           : immutableBids.current.length
-//       }
-//       data={el.data}
-//       bodyData={el.title === "Traders" ? traders : bids}
-//       key={idx}
-//     />
-//   );
-// })}
-// <FormSection
-//   traders={traders}
-//   form={form}
-//   clearForm={clearForm}
-//   setForm={setForm}
-//   placeBid={placeBid}
-//   handleFormChange={handleFormChange}
-// />
-// <Grid
-//   container
-//   sx={{ width: "100%", height: "100%", maxWidth: "605px" }}
-//   gap="27px"
-//   flexDirection={"column"}
-// > 
-// </Grid>

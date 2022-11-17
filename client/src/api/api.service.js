@@ -1,4 +1,4 @@
-import { MEASURMENTS, NFT, ORGANISATIONS, STATION, POLKANFT } from "./api.endpoints";
+import { MEASURMENTS, NFT, ORGANISATIONS, STATION, POLKANFT, CRT } from "./api.endpoints";
 import { httpClient } from "./httpClient";
 import { httpClientPolkadot } from "./httpClientPolkadot";
 
@@ -59,5 +59,17 @@ export const getPolkadotToken = async () => {
   // const res = await httpClient.get(`${MEASURMENTS}/${org}/${station}`);
   const res = await httpClientPolkadot.get(`${POLKANFT}`);
   console.log(res)
+  return res?.data;
+};
+
+export const createCRT = async (body) => {
+  const res = await httpClient.post(CRT, body);
+  return res?.data;
+};
+
+export const getCRTs = async (owner) => {
+  const res = await httpClient.get(
+    `${CRT}${owner !== undefined ? `?owner=${owner}` : ""}`
+  );
   return res?.data;
 };

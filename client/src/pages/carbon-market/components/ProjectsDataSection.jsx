@@ -1,7 +1,6 @@
 import { Box, Grid } from "@mui/material";
 import React from "react";
 import CustomizedTable from "../../../components/table/CustomizedTable";
-import RegularText from "../../../components/texts/RegularText";
 import TitleText from "../../../components/texts/TitleText";
 import MarketDataCell from "./MarketDataCell";
 
@@ -23,17 +22,14 @@ const TableContainerStyle = {
   },
 };
 
-const ProjectsDataSection = ({ matchingData, data, bodyData }) => {
+const ProjectsDataSection = ({ bodyData }) => {
   const sort = false;
   return (
     <Box sx={SecondBoxStyle}>
       <TitleText title={'Projects'} />
-      {/* <RegularText
-        content={`${bodyData ? bodyData.length : 0}/${matchingData} matching`}
-      /> */}
       <Grid sx={TableContainerStyle}>
         <CustomizedTable
-          headData={["ID", "Country", "Years", 'Methodology', "Action"]}
+          headData={["Platform", "Name", "ID", "Country", "Years", 'Methodology', "Action"]}
           bodyData={bodyData}
           paginationChunkSize={3}
           renderCell={(el, idx) => {
