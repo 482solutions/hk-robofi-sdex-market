@@ -21,11 +21,12 @@ const TokensModalSection = ({
   setIsModalOpen,
 }) => {
   const [value, setValue] = useState("No");
-  console.log(data)
   const [disabled, setDisabled] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [buttonText, setbuttonText] = useState('Offset');
 
   const handleSubmit = async (data, value) => {
-    console.log(data.address, value)
+    setLoading(true)
     const res = await createCRT(
       {
         tco2: data,
@@ -33,143 +34,25 @@ const TokensModalSection = ({
         owner: window.accountId,
       }
     );
-    console.log(res)
+    if (res.status == 'ok') {
+      setLoading(false);
+      setDisabled(true);
+      setbuttonText('TCO2 created')
+      setTimeout(() => {
+        setIsModalOpen(false)
+        setDisabled(false);
+        setbuttonText('Offset')
+      }
+      , 3000)
+    }
   };
-
-  // const handleSubmit = async (id, ownerId, price) => {
-  //   const contract = await new Contract(
-  //     window.walletConnection.account(),
-  //     process.env.REACT_APP_NFT_DEV_ACCOUNT_ID,
-  //     {
-  //       viewMethods: [],
-  //       changeMethods: ["nft_approve"],
-  //     }
-  //   );
-
-  //   await contract["nft_approve"](
-  //     {
-  //       token_id: `${id}`,
-  //       account_id: `market.${process.env.REACT_APP_NFT_DEV_ACCOUNT_ID}`,
-  //       msg: JSON.stringify({
-  //         sale_conditions: `${value}000000000000000000000000`,
-  //       }),
-  //     },
-  //     "300000000000000",
-  //     "1510000000000000000000"
-  //   );
-  //   setIsExchange((prev) => ({ ...prev, [ownerId]: true }));
-  // };
-
-  // const payload = {
-  //   EAC: {
-  //     owner: window.walletConnection.getAccountId(),
-  //     metadata: {
-  //       title: "test",
-  //       extra: JSON.stringify({
-  //         startDate: new Date(data["Start Date"]),
-  //         endDate: new Date(data["End Date"]),
-  //         generatedEnergy: +data["Power Mw"],
-  //         station: "WertherStation",
-  //         organisation: localStorage.organisation,
-  //         storage_key: data["Storage Key"],
-  //         owner_addr: data["Owner Addr"],
-  //         price_pvse: +data["Price"],
-  //       }),
-  //     },
-  //   },
-  // };
-
-  // const handleSubmit = async (payload, ownerId, station) => {
-  //   const finded = data.stationData.current.find((i) => i.name === station);
-  //   if (finded) {
-  //     payload.EAC.metadata.extra = JSON.stringify({
-  //       startDate: new Date(data["Start Date"]),
-  //       endDate: new Date(data["End Date"]),
-  //       generatedEnergy: +data["Power Mw"],
-  //       station: station,
-  //       organisation: localStorage.organisation,
-  //       location: finded.countryId,
-  //       deviceType: finded.stationEnergyType,
-  //       storage_key: data["Storage Key"],
-  //       owner_addr: data["Owner Addr"],
-  //       price_pvse: +data["Price"],
-  //     });
-  //   }
-  //   const res = await getNFTs(window.accountId);
-  //   console.log(res)
-  //   const deviceInfo = res.map((i) => {
-  //     const parsed = JSON.parse(i.metadata.extra);
-  //     return { ...i, metadata: { ...i.metadata, extra: parsed } };
-  //   });
-  //   const filteredNFT = deviceInfo.filter((i) => {
-  //     return i.metadata.extra.station === data["Stations"];
-  //   });
-
-  //   if (filteredNFT.length) {
-  //     const isOverlap = filteredNFT.some((i) => {
-  //       return (
-  //         moment(data["Start date of creation"]).isBetween(
-  //           i.metadata.extra.startDate.split("T")[0],
-  //           i.metadata.extra.endDate.split("T")[0],
-  //           null,
-  //           []
-  //         ) ||
-  //         moment(data["End date of creation"]).isBetween(
-  //           i.metadata.extra.startDate.split("T")[0],
-  //           i.metadata.extra.endDate.split("T")[0],
-  //           null,
-  //           []
-  //         ) ||
-  //         moment(i.metadata.extra.startDate.split("T")[0]).isBetween(
-  //           data["Start date of creation"],
-  //           data["End date of creation"],
-  //           null,
-  //           []
-  //         ) ||
-  //         moment(i.metadata.extra.endDate.split("T")[0]).isBetween(
-  //           data["Start date of creation"],
-  //           data["End date of creation"],
-  //           null,
-  //           []
-  //         )
-  //       );
-  //     });
-  //     if (isOverlap) {
-  //       setInfoType({
-  //         type: "error",
-  //         msg: "Dates are overalaped with already created EAC with this station",
-  //       });
-  //       handleClose();
-  //       setInfoModalIsOpen(true);
-  //       setLoading(false);
-  //       return;
-  //     }
-  //   }
-  //   console.log(payload.EAC)
-  //   try {
-  //       const res = await createNFT(
-  //         payload["EAC"],
-  //         data.client
-  //       );
-  //       if (res) {
-  //         console.log("success")
-  //         window.location.reload(false);
-  //       }
-  //     } catch (e) {
-  //       let message = `Something went wrong during creation EAC`;
-  //       if (e.data?.statusCode === 422) {
-  //         message = `EAC with the name ${payload['EAC'].name} is already exist`;
-  //       }
-  //       console.log(message)
-  //     }
-  // };
 
   return (
     <CustomizedModal
       open={isModalOpen}
       handleClose={() => setIsModalOpen(false)}
     >
-      <TitleText title={`Buy TCO2 token`} />
+      <TitleText title={`Offset CO2`} />
       <Grid container flexDirection={"column"} gap="19px">
         {inputNames.map((i, idx) => {
           return (
@@ -210,9 +93,10 @@ const TokensModalSection = ({
           }}
         >
           <CreateButton
-            text="Buy CRT"
+            text={buttonText}
             onClick={() => handleSubmit(data, value)}
             disabled={disabled}
+            loading={loading}
           />
         </Box>
       </Grid>

@@ -1,4 +1,4 @@
-import { Box, Grid } from "@mui/material";
+import { Box, Grid, Link } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import { useMemo } from "react";
 import {
@@ -24,25 +24,6 @@ export const TableCellStyle = {
   color: "#3F4246",
 };
 
-//   [
-//     {
-//         "metadata": {
-//             "platform": "ToucanProtocol",
-//             "projectName": "50 MW Sipansihaporas Hydro Power Plant, North Sumatra",
-//             "symbol": "TCO2-VCS-191-2009",
-//             "region": "China",
-//             "year": "2009",
-//             "type": "BCT",
-//             "address": "0xccacc6099debd9654c6814fcb800431ef7549b10",
-//             "startTime": "1230768000",
-//             "endTime": "1262217600",
-//             "externalHash": "0x5c108e72079e948304d5867956201ae3bd71be075023b7eb0e8f5b047b2ac18d",
-//             "externalHash": 1668695128
-//         },
-//         "approved_account_ids": {}
-//     }
-// ]
-
 const MyCrts = () => {
   const [body, setBody] = useState();
 
@@ -55,23 +36,23 @@ const MyCrts = () => {
         mounted &&
           setBody(
             res.map((i) => {
+              let link = <Link href={`https://polygonscan.com/tx/${i.metadata.externalHash}`} target="_blank">{i.metadata.platform}</Link>
               return {
-                "Source": i.metadata.platform,
-                "Issuance date": i.metadata.mintTime,
-                "Quantity": `${i.metadata.amount} t/CO2e`,
-                "Price": 100,
-                "Device owner": i.owner_id,
-                "Certificate ID": i.token_id,
-                "Certified": `${i.metadata.amount} t/CO2e`,
                 "Platform": i.metadata.platform,
+                "Mint time": new Date(i.metadata.mintTime * 1000),
+                "Quantity": `${i.metadata.amount} TCO2`,
+                "External link": link,
+                "Owner": i.owner_id,
+                "Certificate ID": i.token_id,
                 "Symbol": i.metadata.symbol,
                 "Project name": i.metadata.projectName,
                 "Region": i.metadata.region,
                 "Year": i.metadata.year,
-                "Start time": i.metadata.startTime,
-                "End time": i.metadata.endTime,
-                "External link": i.metadata.externalHash,
-                "Mint time": i.metadata.mintTime,
+                "Start time": new Date(i.metadata.startTime * 1000),
+                "End time": new Date(i.metadata.endTime * 1000),
+                "Price": 100,
+                "address": i.metadata.address,
+                "retireStatus": i.retireStatus,
               };
             })
           );
@@ -90,11 +71,11 @@ const MyCrts = () => {
       </Grid>
       <CustomizedTable
         headData={[
-          "Source",
+          "Platform",
           "Info",
-          "Issuance date",
+          "Mint time",
           "Quantity",
-          "Price",
+          "External link",
           "Action",
         ]}
         bodyData={body}

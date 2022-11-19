@@ -27,7 +27,7 @@ const CustomizedReadInput = ({
         type={type}
         fullWidth
         label={labelName}
-        defaultValue={controlled ? undefined : defaultValue}
+        defaultValue={controlled ? undefined : (defaultValue == '' ? "N/A" : defaultValue)}
         value={value}
         onChange={onChange}
         sx={{

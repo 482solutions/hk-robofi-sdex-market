@@ -1,24 +1,22 @@
 import {
-  Box,
   Button,
   Collapse,
   IconButton,
   TableRow,
   TableCell,
   Grid,
+  Link,
 } from "@mui/material";
-import React, { useEffect } from "react";
+import React from "react";
 import ArrowIcon from "../assets/arrow-icon.svg";
 import { TableCellStyle } from "../MyCrts";
 import CellsModalSection from "./CellsModalSection";
 import CustomizedReadInput from "../../../components/inputs/CustomizedReadInput";
-import { Contract } from "near-api-js";
-import { useLocation } from "react-router-dom";
 
 const deviceData = [
-  "Device owner",
+  "Owner",
   "Certificate ID",
-  "Certified",
+  "Quantity",
   "Platform",
   "Symbol",
   "Project name",
@@ -26,9 +24,24 @@ const deviceData = [
   "Year",
   "Start time",
   "End time",
-  "External link",
   "Mint time",
+  // "Price",
 ];
+
+const retireData = [
+  'retirementEntityName',
+  // 'beneficiaryAddress',
+  'beneficiaryName',
+  'retirementMessage',
+  'retirementTime'
+]
+const retireDataLabel = {
+  'retirementEntityName': 'Retirement entity name',
+  // 'beneficiaryAddress': 'Beneficiary Address',
+  'beneficiaryName': 'Beneficiary name',
+  'retirementMessage': 'Retirement message',
+  'retirementTime': 'Retirement time'
+}
 
 export const BtnStyle = {
   backgroundColor: "#14D9C1",
@@ -44,45 +57,14 @@ export const BtnStyle = {
   },
 };
 
-const DotStyle = {
-  height: "8px",
-  width: "8px",
-  backgroundColor: "#14D9C1",
-  borderRadius: "50%",
-  display: "inline-block",
-};
-
-const CrtsTableCell = ({ data, idx }) => {
+const CrtsTableCell = ({ data }) => {
+  const retireMetadata = data.retireStatus?.retireMetadata;
   const [isOpen, setIsOpen] = React.useState(false);
   const [isModalOpen, setIsModalOpen] = React.useState(false);
-  const [isExchange, setIsExchange] = React.useState();
-
-  useEffect(() => {
-    (async () => {
-      const contract = await new Contract(
-        window.walletConnection.account(),
-        `market.${process.env.REACT_APP_NFT_DEV_ACCOUNT_ID}`,
-        {
-          viewMethods: ["get_asks_by_owner_id"],
-          changeMethods: [],
-        }
-      );
-      const asks = await contract["get_asks_by_owner_id"]({
-        account_id: window.accountId,
-        from: 0,
-        limit: 100,
-      });
-      if (asks && asks.length) {
-        const finded = asks.find((i) => i.ask.token_id == data["id"]);
-        if (finded) setIsExchange(true);
-      }
-    })();
-  }, []);
-
   return (
     <>
       <TableRow>
-        <TableCell>{data["Source"]}</TableCell>
+        <TableCell>{data["Platform"]}</TableCell>
         <TableCell>
           <IconButton size="small" onClick={() => setIsOpen((prev) => !prev)}>
             <img
@@ -97,27 +79,21 @@ const CrtsTableCell = ({ data, idx }) => {
           .map((i, index) => {
             return (
               <TableCell key={index} sx={TableCellStyle}>
-                {index === 4 && (
-                  <span
-                    style={
-                      isExchange
-                        ? DotStyle
-                        : {
-                            ...DotStyle,
-                            backgroundColor: "rgba(103, 103, 103, 0.3)",
-                          }
-                    }
-                  ></span>
-                )}{" "}
                 {i instanceof Date ? i.toDateString() : i}
               </TableCell>
             );
           })}
-        <TableCell>
-          <Button onClick={() => setIsModalOpen(true)} sx={BtnStyle}>
-            RETIRE
-          </Button>
-        </TableCell>
+        {!data.retireStatus &&
+          <TableCell>
+            <Button onClick={() => setIsModalOpen(true)} sx={BtnStyle}>
+              RETIRE
+            </Button>
+          </TableCell>}
+        {data.retireStatus &&
+          <TableCell sx={TableCellStyle}>
+            <Link href={`https://polygonscan.com/tx/${data.retireStatus.retireHash}`} target="_blank">Retired</Link>
+          </TableCell>
+        }
       </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={10}>
@@ -131,60 +107,61 @@ const CrtsTableCell = ({ data, idx }) => {
               paddingBottom: "32px",
             }}
           >
-            {/* <Box
-              sx={{
-                maxWidth: "140px",
-                width: "140px",
-                maxHeight: "107px",
-                marginRight: "76px",
-                display: "inline-block",
-                float: "left",
-              }}
-            >
-              <img
-                src={mapStations[data["Device Type"]]}
-                alt="station"
-                style={{ width: "100%", height: "100%" }}
-              />
-            </Box> */}
-
-            {deviceData.map((i, idx) => {
-              return (
-                <Grid
-                  sx={{
-                    maxWidth: "198px",
-                    display: "inline-flex",
-                    marginRight: "27px",
-                    marginBottom: "41px",
-                  }}
-                  key={idx}
-                >
-                  <CustomizedReadInput
-                    labelName={i}
-                    disabled
-                    defaultValue={
-                      data[i] instanceof Date ? data[i].toDateString() : data[i]
-                    }
-                    // adornMent={i === "Certified" ? "MWh2" : undefined}
-                  />
-                </Grid>
-              );
-            })}
+            <Grid>
+              {deviceData.map((i, idx) => {
+                return (
+                  <Grid
+                    sx={{
+                      maxWidth: "198px",
+                      display: "inline-flex",
+                      marginRight: "27px",
+                      marginBottom: "41px",
+                    }}
+                    key={idx}
+                  >
+                    <CustomizedReadInput
+                      labelName={i}
+                      disabled
+                      defaultValue={
+                        data[i] instanceof Date ? data[i].toDateString() : data[i]
+                      }
+                    />
+                  </Grid>
+                );
+              })}
+            </Grid>
+            {data.retireStatus && <Grid>
+              <Grid sx={{ fontSize: "16px;" }} >Retirement info</Grid>
+              {retireData.map((i, idx) => {
+                return (
+                  <Grid
+                    sx={{
+                      maxWidth: "198px",
+                      display: "inline-flex",
+                      marginRight: "27px",
+                      marginBottom: "41px",
+                    }}
+                    key={idx}
+                  >
+                    <CustomizedReadInput
+                      labelName={retireDataLabel[i]}
+                      disabled
+                      defaultValue={
+                        i == 'retirementTime' ? new Date(retireMetadata[i] * 1000).toDateString() : retireMetadata[i]
+                      }
+                    />
+                  </Grid>
+                );
+              })}
+            </Grid>}
           </Collapse>
         </TableCell>
       </TableRow>
-      {/* <CellsModalSection
+      <CellsModalSection
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
-        setIsExchange={setIsExchange}
-        data={{
-          "Creation time": data.Date.toDateString(),
-          MWh: data.MWh,
-          id: data.id,
-          accountId: data["Device owner"],
-          Facility: data["Facility name"],
-        }}
-      /> */}
+        data={data}
+      />
     </>
   );
 };

@@ -30,7 +30,8 @@ const PlatformsDataSection = ({ matchingData, bodyData }) => {
       <TitleText title={'Platforms'} />
       <Grid sx={TableContainerStyle}>
         <CustomizedTable
-          headData={["Name", "BCT", "NCT", "Action"]}
+          // headData={["Name", "BCT", "NCT", "Action"]}
+          headData={["Name", "BCT", "NCT"]}
           bodyData={bodyData}
           paginationChunkSize={3}
           renderCell={(el, idx) => {

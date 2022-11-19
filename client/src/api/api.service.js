@@ -56,7 +56,6 @@ export const getNFTById = async (id) => {
 };
 
 export const getPolkadotToken = async () => {
-  // const res = await httpClient.get(`${MEASURMENTS}/${org}/${station}`);
   const res = await httpClientPolkadot.get(`${POLKANFT}`);
   console.log(res)
   return res?.data;
@@ -71,5 +70,10 @@ export const getCRTs = async (owner) => {
   const res = await httpClient.get(
     `${CRT}${owner !== undefined ? `?owner=${owner}` : ""}`
   );
+  return res?.data;
+};
+
+export const retireCRT = async (body) => {
+  const res = await httpClient.put(CRT, body);
   return res?.data;
 };

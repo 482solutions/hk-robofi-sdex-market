@@ -19,7 +19,7 @@ const TokensMarketDataCell = ({ data, cellCount}) => {
                   disabled={false}
                   onClick={() => setIsModalOpen(true)}
             >
-              Buy
+              Offset
             </Button>
           </TableCell>
       </TableRow>
